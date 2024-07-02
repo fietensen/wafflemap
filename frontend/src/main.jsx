@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import CheckApi from './CheckApi.jsx';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: '/profile/:profileId',
     element: <div>This page is supposed to show you how many waffles youve eaten so far.. I guess not as many as me!</div>
+  },
+  {
+    path: '/check',
+    element: <CheckApi />
   }
 ]);
 
