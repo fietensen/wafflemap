@@ -1,7 +1,8 @@
 import { TileLayer } from 'react-leaflet/TileLayer';
 import { MapContainer } from 'react-leaflet/MapContainer';
+import PropTypes from 'prop-types';
 
-function Map() {
+function Map({ children }) {
     return (
         <MapContainer style={{
             width: '100vw',
@@ -11,8 +12,13 @@ function Map() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            {children}
         </MapContainer>
     )
 }
+
+Map.propTypes = {
+    children: PropTypes.node,
+};
 
 export default Map
