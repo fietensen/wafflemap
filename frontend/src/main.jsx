@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import CheckApi from './CheckApi.jsx';
+import './index.css';
 
 const router = createBrowserRouter([
   {
