@@ -9,3 +9,4 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y python3.9 python3-pip
 RUN python3 -m pip install -r ./requirements.txt
+RUN chmod 777 .
