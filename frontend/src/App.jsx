@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom"
+import Map from "./Map"
 
 function App() {
   return (
     <div>
-      Hello World!
-      <br />
-      <Link to={'/profile/1'}>Click me to have a look at a profile!</Link>
+      <Map />
     </div>
   )
 }
