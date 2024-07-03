@@ -31,16 +31,16 @@ In order to configure the services, you can modify the `.development.env` file l
 |      POSTGRES_DB      |                         The name of the default Postgres database                          | :heavy_check_mark: |
 | PGADMIN_DEFAULT_EMAIL |                The email (doesn't have to exist) for the PgAdmin WebService                | :heavy_check_mark: |
 | PGADMIN_DEFAULT_EMAIL |                          The password for the PgAdming Webservice                          | :heavy_check_mark: |
-|   WM_POSTGRES_HOST    |                              Hostname of the Postgres Service                              | :white_check_mark: |
-|   WM_POSTGRES_PORT    |                            Port number of the Postgres Service                             | :white_check_mark: |
-|        WM_HOST        |                           Host to bind the WaffleMap Service to                            | :white_check_mark: |
-|        WM_PORT        |                        Port number to bind the WaffleMap Service to                        | :white_check_mark: |
-|   WM_FLYWAY_ENABLED   |                       Wether to use Flyway for automatic migrations                        | :white_check_mark: |
-|     WM_POSTGRES_*     |               Copies of the Postgres configuration for the WaffleMap Service               | :white_check_mark: |
-|  OSM_INIT_TARGET_URI  | URI for the OSM initialization Script to connect to the Postgres Database via Unix Sockets | :white_check_mark: |
+|   WM_POSTGRES_HOST    |                              Hostname of the Postgres Service                              |        :x:         |
+|   WM_POSTGRES_PORT    |                            Port number of the Postgres Service                             |        :x:         |
+|        WM_HOST        |                           Host to bind the WaffleMap Service to                            |        :x:         |
+|        WM_PORT        |                        Port number to bind the WaffleMap Service to                        |        :x:         |
+|   WM_FLYWAY_ENABLED   |                       Wether to use Flyway for automatic migrations                        |        :x:         |
+|     WM_POSTGRES_*     |               Copies of the Postgres configuration for the WaffleMap Service               |        :x:         |
+|  OSM_INIT_TARGET_URI  | URI for the OSM initialization Script to connect to the Postgres Database via Unix Sockets |        :x:         |
 |    OSM_INIT_PLACE     |                     The Location to download from OSM for the Database                     | :heavy_check_mark: |
-| OSM_INIT_NETWORK_TYPE |               The network type e.g. Car-Network (drive) to download from OSM               | :white_check_mark: |
-|   OSM_INIT_TABLE_*    |                    The tables to add the downloaded OSM street data to                     | :white_check_mark: |
+| OSM_INIT_NETWORK_TYPE |               The network type e.g. Car-Network (drive) to download from OSM               |        :x:         |
+|   OSM_INIT_TABLE_*    |                    The tables to add the downloaded OSM street data to                     |        :x:         |
 
 ### Deployment
 
