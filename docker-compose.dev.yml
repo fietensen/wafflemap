@@ -1,0 +1,6 @@
+version: "3"
+services:
+  app:
+    container_name: wafflemap
+    restart: no
+    entrypoint: ["echo", "the wafflemap service is disabled during development"]
