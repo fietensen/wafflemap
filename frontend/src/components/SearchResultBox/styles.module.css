@@ -1,0 +1,12 @@
+/**
+    @tag: div
+    @component: Wrapper
+**/
+.wrapper {
+    border: 1px solid #5f5f5f;
+    border-top-style: unset;
+
+    border-radius: 4px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
