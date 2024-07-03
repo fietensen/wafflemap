@@ -1,0 +1,25 @@
+name: Lint Frontend
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+  push:
+    paths:
+      - "frontend/**"
+    branches:
+      - "feature/**"
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 21
+      - name: Run ESLint
+        run: |
+          cd frontend
+          npm ci
+          npx eslint src/**
