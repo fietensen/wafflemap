@@ -1,0 +1,65 @@
+name: Deploy to Test Server
+
+on:
+  push:
+    branches:
+      - develop
+  repository_dispatch:
+    types: [test-deploy]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create environment file
+        run: |
+          echo "POSTGRES_USER=\"${{ secrets.DENV_POSTGRES_USER }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "POSTGRES_PASSWORD=\"${{ secrets.DENV_POSTGRES_PASSWORD }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "POSTGRES_DB=\"postgres\"" >> ${{ DC_CONFIG_FILE }}
+          echo "PGADMIN_DEFAULT_EMAIL=\"${{ secrets.DENV_PGADMIN_DEFAULT_EMAIL }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "PGADMIN_DEFAULT_PASSWORD=\"${{ secrets.DENV_PGADMIN_DEFAULT_PASSWORD }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_POSTGRES_HOST=pgdb" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_POSTGRES_PORT=5432" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_HOST=0.0.0.0" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_PORT=8080" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_FLYWAY_ENABLED=false" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_POSTGRES_DB=\"postgres\"" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_POSTGRES_USER=\"${{ secrets.DENV_POSTGRES_USER }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "WM_POSTGRES_PASSWORD=\"${{ secrets.DENV_POSTGRES_PASSWORD }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "OSM_INIT_TARGET_URI=\"postgresql://${WM_POSTGRES_USER}@/${WM_POSTGRES_DB}?host=/var/run/postgresql\""
+          echo "OSM_INIT_PLACE=\"${{ DENV_OSM_INIT_PLACE }}\"" >> ${{ DC_CONFIG_FILE }}
+          echo "OSM_NETWORK_TYPE=\"drive\"" >> ${{ DC_CONFIG_FILE }}
+          echo "OSM_INIT_TABLE_VERTICES=\"location_roads_verts\"" >> ${{ DC_CONFIG_FILE }}
+          echo "OSM_INIT_TABLE_EDGES=\"location_roads_edges\"" >> ${{ DC_CONFIG_FILE }}
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SSH_REMOTE_SERVER >> ~/.ssh/known_hosts
+
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_REMOTE_SERVER: ${{ secrets.SSH_REMOTE_SERVER }}
+
+      - name: Deploy application
+        run: |
+          scp -o StrictHostKeyChecking=no $DC_CONFIG_FILE $SSH_REMOTE_USERNAME@$SSH_REMOTE_SERVER:$SSH_REMOTE_INSTALL_LOCATION/$DC_CONFIG_FILE
+          ssh $SSH_REMOTE_USERNAME@$SSH_REMOTE_SERVER 'bash -s' << 'EOF'
+            export DC_CONFIG_FILE=$SSH_REMOTE_INSTALL_LOCATION/$DC_CONFIG_FILE
+            cd $SSH_REMOTE_INSTALL_LOCATION
+            sudo git pull origin develop
+            sudo docker-compose down
+            sudo docker-compose up -d --build
+          EOF
+
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_REMOTE_SERVER: ${{ secrets.SSH_REMOTE_SERVER }}
+          SSH_REMOTE_USERNAME: ${{ secrets.SSH_REMOTE_USERNAME }}
+          SSH_REMOTE_INSTALL_LOCATION: ${{ secrets.SSH_REMOTE_INSTALL_LOCATION }}
+          DC_CONFIG_FILE: ${{ DC_CONFIG_FILE }}
