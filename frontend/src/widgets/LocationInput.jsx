@@ -6,12 +6,61 @@ import SearchResultItem from '../components/SearchResultItem';
 
 function LocationInput({ onLocationChange }) {
     const [userTyping, setUserTyping] = useState(false);
-    const [userInput, setUserInput] = useState('');
+    const [userInput, setUserInput] = useState(null);
     const [resultsVisible, setResultsVisible] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         setResultsVisible((userInput || userTyping) ? true : false);
     }, [userInput, userTyping]);
+
+    useEffect(() => {
+        if (!userInput) {
+            setUserTyping(false);
+            return;
+        }
+
+        fetch('/api/v1/road/search?' + new URLSearchParams({
+            name: userInput
+        }).toString(), {
+            headers: new Headers({
+                'Accept': 'application/json'
+            })
+        })
+            .then((results) => (
+                results.json()
+            ))
+            .then((results) => {
+                if (results.length === 0)
+                    setSearchResults([]);
+
+                // limit number of results shown to 12
+                // TODO: think of a different solution.
+                //       perhaps a scrollable window??
+                results.splice(12);
+                setSearchResults(results.map((value, index) => (
+                    <SearchResultItem
+                        key={index}
+                        location={{
+                            name: value[0],
+                            lat: value[2],
+                            lon: value[1],
+                        }}
+                        onClick={() => {
+                            onLocationChange({
+                                lat: value[2],
+                                lon: value[1],
+                            });
+                        }}
+                    />
+                )));
+
+                // only do this here, because this way the loading menu
+                // stays loading as long as the request isn't finished
+                setUserTyping(false);
+            })
+            .catch(() => { alert('Something went wrong.'); })
+    }, [onLocationChange, userInput])
 
     return (
         <div style={{
@@ -29,7 +78,6 @@ function LocationInput({ onLocationChange }) {
         }}>
             <InputBox
                 onInput={(text) => {
-                    setUserTyping(false);
                     setUserInput(text);
                 }}
                 onStartTyping={() => {
@@ -46,29 +94,8 @@ function LocationInput({ onLocationChange }) {
                         {
                             // The clickable search results
                             // for now this is just two demo locations in berlin
+                            searchResults
                         }
-
-                        <SearchResultItem location={{
-                            lat: 52.5183226,
-                            lon: 13.4908384,
-                            name: "Gotlindestraße",
-                        }} onClick={() => {
-                            onLocationChange({
-                                lat: 52.5183226,
-                                lon: 13.4908384,
-                            });
-                        }} />
-
-                        <SearchResultItem location={{
-                            lat: 52.4889952,
-                            lon: 13.3449074,
-                            name: "Grunewaldstraße",
-                        }} onClick={() => {
-                            onLocationChange({
-                                lat: 52.4889952,
-                                lon: 13.3449074,
-                            });
-                        }} />
 
                     </SearchResultBox>
                     :
