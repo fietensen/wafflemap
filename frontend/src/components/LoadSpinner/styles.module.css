@@ -1,0 +1,76 @@
+/**
+    @tag: div
+    @component: Wrapper
+    width: 5em --width
+**/
+.wrapper {
+    --width: 5em;
+
+    aspect-ratio: 1 / 1;
+    width: var(--width);
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/**
+    @tag: div
+    @component: Circ
+    width: 5em --width
+    borderWidth: 0.25em --border-width
+    color: #7f7f7f --color
+**/
+.circ {
+    --width: 5em;
+    --border-width: 0.25em;
+    --color: #7f7f7f;
+
+    aspect-ratio: 1 / 1;
+    width: var(--width);
+
+    border: var(--border-width) solid var(--color);
+
+    box-sizing: border-box;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: start;
+
+    animation-name: spin;
+    animation-duration: 2000ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/**
+    @tag: div
+    @component: Spinner
+    width: 2em --width
+    borderWidth: 0.25em --border-width
+**/
+.spinner {
+    --width: 2em;
+    --border-width: 0.25em;
+
+    aspect-ratio: 1 / 1;
+    width: var(--width);
+
+    background-color: red;
+
+    margin-top: calc(var(--border-width) * -1);
+
+    background-color: #ffffff;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
