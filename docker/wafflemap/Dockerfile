@@ -29,7 +29,10 @@ RUN ./mvnw package -DskipTests
 # bundling final application
 FROM openjdk:17-alpine
 
+RUN apk add postgresql
+
 WORKDIR /wafflemap_app
+COPY ./docker/wafflemap/init.sh .
 COPY --from=backend-build /build/target/*.jar ./wafflemap.jar
 
-CMD ["java", "-jar", "wafflemap.jar"]
+CMD ["/bin/sh", "./init.sh"]
