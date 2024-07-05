@@ -7,9 +7,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     env_file:
-      - .development.env
-    ports:
-      - "5432:5432"
+      - ${WM_DOCKER_CONFIG}
     volumes:
       - pg_db_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sh:/docker-entrypoint-initdb.d/20_osm_data.sh
@@ -21,9 +19,9 @@ services:
     depends_on:
       - pgdb
     env_file:
-      - .development.env
+      - ${WM_DOCKER_CONFIG}
     ports:
-      - "5000:80"
+      - ${WM_DOCKER_EXPOSE_PGADMIN4}:80
     volumes:
       - pg_admin_data:/var/lib/pgadmin
   
@@ -34,11 +32,11 @@ services:
       dockerfile: ./docker/wafflemap/Dockerfile
     restart: always
     ports:
-      - "8080:8080"
+      - ${WM_DOCKER_EXPOSE_WAFFLEMAP}:8080
     depends_on:
       - pgdb
     env_file:
-      - .development.env
+      - ${WM_DOCKER_CONFIG}
 
 volumes:
   pg_db_data:

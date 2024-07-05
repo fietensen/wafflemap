@@ -1,6 +1,23 @@
 version: "3"
 services:
+  pgdb:
+    container_name: postgres_db
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ${WM_DOCKER_CONFIG}
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_db_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sh:/docker-entrypoint-initdb.d/20_osm_data.sh
+
   app:
     container_name: wafflemap
     restart: no
     entrypoint: ["echo", "the wafflemap service is disabled during development"]
+
+volumes:
+  pg_db_data:
