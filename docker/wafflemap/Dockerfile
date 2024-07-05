@@ -17,6 +17,7 @@ COPY ./backend/mvnw ./mvnw
 COPY ./backend/.mvn ./.mvn
 COPY ./backend/pom.xml ./pom.xml
 
+RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline
 
 COPY ./backend/src ./src
