@@ -14,4 +14,10 @@ public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
     List<Object[]> findRoadsByName(@Param("name") String name,
                                    @Param("limit") Long limit,
                                    @Param("skip") Long skip);
+
+    @Query(value = "SELECT edge.id, edge.x, edge.y, ST_DistanceSphere(edge.geometry, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)) as dist FROM public.location_roads_verts edge ORDER BY dist LIMIT :limit OFFSET :skip", nativeQuery = true)
+    List<Object[]> findClosestNodes(@Param("lat") Double lat,
+                                    @Param("lon") Double lon,
+                                    @Param("limit") Long limit,
+                                    @Param("skip") Long skip);
 }
