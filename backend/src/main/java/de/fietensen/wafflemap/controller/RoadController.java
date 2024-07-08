@@ -1,46 +1,36 @@
 package de.fietensen.wafflemap.controller;
 
+import de.fietensen.wafflemap.dto.RoadDistDTO;
 import de.fietensen.wafflemap.dto.RoadEdgeDTO;
-import de.fietensen.wafflemap.model.RoadEdge;
-import de.fietensen.wafflemap.repository.RoadEdgeRepository;
-import de.fietensen.wafflemap.repository.RoadLocationRepository;
+import de.fietensen.wafflemap.dto.RoadResultsDTO;
+import de.fietensen.wafflemap.dto.RouteDTO;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/road")
 @RequiredArgsConstructor
 @Validated
 public class RoadController {
-    @Autowired
-    private RoadEdgeRepository roadEdgeRepository;
-
-    @Autowired
-    private RoadLocationRepository roadLocationRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
     @GetMapping("/{id}")
     public ResponseEntity<RoadEdgeDTO> getEdgeById(@PathVariable Long id) {
-        Optional<RoadEdge> edge = roadEdgeRepository.findById(id);
-        if (edge.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        RoadEdgeDTO roadEdgeDTO = modelMapper.map(edge.get(), RoadEdgeDTO.class);
-        return ResponseEntity.ok(roadEdgeDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Object[]>> searchRoadLocations(@RequestParam("name") String name) {
-        return ResponseEntity.ok(roadLocationRepository.findMatchingItems(name));
+    public ResponseEntity<RoadResultsDTO> findRoadByName(@RequestParam("name") String name) {
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search/closest")
+    public ResponseEntity<RoadDistDTO> findRoadByLocation(@RequestParam("lat") Double lat, @RequestParam("lon") Double lon) {
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/route/{fromNodeId}/{toNodeId}")
+    public ResponseEntity<RouteDTO> getRouteByNodeIds(@PathVariable Long fromNodeId, @PathVariable Long toNodeId) {
+        return ResponseEntity.noContent().build();
     }
 }
