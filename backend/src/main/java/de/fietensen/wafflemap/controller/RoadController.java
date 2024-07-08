@@ -1,27 +1,46 @@
 package de.fietensen.wafflemap.controller;
 
-import de.fietensen.wafflemap.dto.RoadDistDTO;
-import de.fietensen.wafflemap.dto.RoadEdgeDTO;
-import de.fietensen.wafflemap.dto.RoadResultsDTO;
-import de.fietensen.wafflemap.dto.RouteDTO;
+import de.fietensen.wafflemap.dto.*;
+import de.fietensen.wafflemap.service.RoadService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/v1/road")
 @RequiredArgsConstructor
 @Validated
 public class RoadController {
+    private RoadService roadService;
+
+    @Autowired
+    public RoadController(RoadService roadService) {
+        this.roadService = roadService;
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RoadEdgeDTO> getEdgeById(@PathVariable Long id) {
-        return ResponseEntity.noContent().build();
+        RoadEdgeDTO roadEdgeDTO = roadService.getEdgeById(id);
+        if (roadEdgeDTO == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(roadEdgeDTO);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<RoadResultsDTO> findRoadByName(@RequestParam("name") String name) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<RoadResultsDTO> findRoadByName(HttpServletRequest request,
+                                                         @RequestParam("name") String name,
+                                                         @RequestParam(value = "skip", required = false) Long skip,
+                                                         @RequestParam(value = "limit", required = false) Long limit) {
+        RoadResultsDTO roadResultsDTO = roadService.findRoadByName(request.getRequestURL().toString(), name, skip, limit);
+        if (roadResultsDTO == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(roadResultsDTO);
     }
 
     @GetMapping("/search/closest")
