@@ -1,5 +1,6 @@
 package de.fietensen.wafflemap.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -15,11 +16,17 @@ public class RoadEdge {
     private Long u;
     private Long v;
     private Long key;
-    private String osmid;
+
+    @Column(name = "osmid")
+    private String osmId;
+
     private String lanes;
     private String name;
     private String highway;
-    private String maxspeed;
+
+    @Column(name = "maxspeed")
+    private String maxSpeed;
+
     private Boolean oneway;
     private String reversed;
     private Double length;
@@ -31,7 +38,9 @@ public class RoadEdge {
     private String access;
     private String area;
     private String service;
-    private String est_width;
+
+    @Column(name = "est_width")
+    private String estWidth;
 
     private Geometry geometry;
 }
