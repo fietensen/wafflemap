@@ -74,7 +74,8 @@ function LocationInput({ onLocationChange }) {
             display: 'flex',
             flexDirection: 'column',
             width: '18em',
-            borderRadius: '4px'
+            borderRadius: '4px',
+            height: 'fit-content'
         }}>
             <InputBox
                 onInput={(text) => {
@@ -87,7 +88,6 @@ function LocationInput({ onLocationChange }) {
                 openBottom={resultsVisible}
                 placeholder={"Enter Street Name"}
             />
-            <br />
             {
                 (userInput || userTyping) ?
                     <SearchResultBox showLoadingView={userTyping}>
