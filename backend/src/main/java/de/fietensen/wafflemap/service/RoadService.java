@@ -1,5 +1,6 @@
 package de.fietensen.wafflemap.service;
 
+import de.fietensen.wafflemap.dto.RoadDistDTO;
 import de.fietensen.wafflemap.dto.RoadEdgeDTO;
 import de.fietensen.wafflemap.dto.RoadResultDTO;
 import de.fietensen.wafflemap.dto.RoadResultsDTO;
@@ -80,5 +81,19 @@ public class RoadService {
                 limit));
 
         return roadResultDTO;
+    }
+
+    public RoadDistDTO findRoadByLocation(Double lat, Double lon) {
+        RoadDistDTO roadDistDTO = new RoadDistDTO();
+        List<Object[]> roadDistsRaw = roadSearchRepository.findClosestNodes(lat, lon, 1L, 0L);
+        if (roadDistsRaw.isEmpty())
+            return null;
+
+        roadDistDTO.setId((Long) roadDistsRaw.get(0)[0]);
+        roadDistDTO.setLon((Double) roadDistsRaw.get(0)[1]);
+        roadDistDTO.setLat((Double) roadDistsRaw.get(0)[2]);
+        roadDistDTO.setDistance((Double) roadDistsRaw.get(0)[3]);
+
+        return roadDistDTO;
     }
 }
