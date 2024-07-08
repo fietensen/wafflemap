@@ -45,7 +45,11 @@ public class RoadController {
 
     @GetMapping("/search/closest")
     public ResponseEntity<RoadDistDTO> findRoadByLocation(@RequestParam("lat") Double lat, @RequestParam("lon") Double lon) {
-        return ResponseEntity.noContent().build();
+        RoadDistDTO roadDistDTO = roadService.findRoadByLocation(lat, lon);
+        if (roadDistDTO == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(roadDistDTO);
     }
 
     @GetMapping("/route/{fromNodeId}/{toNodeId}")
