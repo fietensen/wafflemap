@@ -7,6 +7,9 @@ until psql -v ON_ERROR_STOP=1 -U "${WM_POSTGRES_USER}" -d "${WM_POSTGRES_DB}" -c
   >&2 echo "PostgreSQL is unavailable - sleeping"
   sleep 1
 done
+
+# Create pgrouting extension
+psql -v ON_ERROR_STOP=1 -U "${WM_POSTGRES_USER}" -d "${WM_POSTGRES_DB}" -c "CREATE EXTENSION IF NOT EXISTS pgrouting;"
 unset PGPASSWORD
 
 python3 -u /wafflemap_db_init/download_insert_osm_data.py
