@@ -54,6 +54,10 @@ public class RoadController {
 
     @GetMapping("/route/{fromNodeId}/{toNodeId}")
     public ResponseEntity<RouteDTO> getRouteByNodeIds(@PathVariable Long fromNodeId, @PathVariable Long toNodeId) {
-        return ResponseEntity.noContent().build();
+        RouteDTO routeDTO = roadService.getRouteByNodeIds(fromNodeId, toNodeId);
+        if (routeDTO == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(routeDTO);
     }
 }

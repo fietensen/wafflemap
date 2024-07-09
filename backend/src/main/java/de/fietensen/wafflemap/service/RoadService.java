@@ -1,9 +1,6 @@
 package de.fietensen.wafflemap.service;
 
-import de.fietensen.wafflemap.dto.RoadDistDTO;
-import de.fietensen.wafflemap.dto.RoadEdgeDTO;
-import de.fietensen.wafflemap.dto.RoadResultDTO;
-import de.fietensen.wafflemap.dto.RoadResultsDTO;
+import de.fietensen.wafflemap.dto.*;
 import de.fietensen.wafflemap.model.RoadEdge;
 import de.fietensen.wafflemap.repository.RoadEdgeRepository;
 import de.fietensen.wafflemap.repository.RoadSearchRepository;
@@ -30,10 +27,7 @@ public class RoadService {
 
     public RoadEdgeDTO getEdgeById(Long id) {
         Optional<RoadEdge> edge = roadEdgeRepository.findById(id);
-        if (edge.isEmpty())
-            return null;
-
-        return modelMapper.map(edge, RoadEdgeDTO.class);
+        return edge.map(roadEdge -> modelMapper.map(roadEdge, RoadEdgeDTO.class)).orElse(null);
     }
 
     public RoadResultsDTO findRoadByName(String baseUrl,
@@ -95,5 +89,24 @@ public class RoadService {
         roadDistDTO.setDistance((Double) roadDistsRaw.get(0)[3]);
 
         return roadDistDTO;
+    }
+
+    public RouteDTO getRouteByNodeIds(Long fromNodeId, Long toNodeId) {
+        RouteDTO routeDTO = new RouteDTO();
+        List<Long> pathIds = new LinkedList<>();
+        Double totalCost = 0.0;
+        List<Object[]> pathRaw = roadSearchRepository.findPathFromAToB(fromNodeId, toNodeId);
+        if (pathRaw.isEmpty())
+            return null;
+
+        for (Object[] pathSeq : pathRaw) {
+            pathIds.add((Long) pathSeq[0]);
+            totalCost += (Double) pathSeq[1];
+        }
+
+        routeDTO.setDistance(totalCost);
+        routeDTO.setIds(pathIds);
+
+        return routeDTO;
     }
 }

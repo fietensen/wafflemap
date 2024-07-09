@@ -20,4 +20,12 @@ public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
                                     @Param("lon") Double lon,
                                     @Param("limit") Long limit,
                                     @Param("skip") Long skip);
+
+    @Query(value = "SELECT edge, cost FROM pgr_dijkstra(\n" +
+            "\t'SELECT id, u as source, v as target, length as cost FROM location_roads_edges',\n" +
+            "\t:from,\n" +
+            "\t:to,\n" +
+            "\tTRUE\n" +
+            ") pd WHERE edge != -1 ORDER BY path_seq", nativeQuery = true)
+    List<Object[]> findPathFromAToB(@Param("from") Long from, @Param("to") Long to);
 }
