@@ -21,7 +21,8 @@ function LocationInput({ onLocationChange }) {
         }
 
         fetch('/api/v1/road/search?' + new URLSearchParams({
-            name: userInput
+            name: userInput,
+            limit: 12
         }).toString(), {
             headers: new Headers({
                 'Accept': 'application/json'
@@ -34,22 +35,17 @@ function LocationInput({ onLocationChange }) {
                 if (results.length === 0)
                     setSearchResults([]);
 
-                // limit number of results shown to 12
-                // TODO: think of a different solution.
-                //       perhaps a scrollable window??
-                results.splice(12);
-                setSearchResults(results.map((value, index) => (
+                // TODO: Do not just limit the number of requested
+                // items but utilize the "next" Link to fetch
+                // as many as the user wants to
+                setSearchResults(results.results.map((result, index) => (
                     <SearchResultItem
                         key={index}
-                        location={{
-                            name: value[0],
-                            lat: value[2],
-                            lon: value[1],
-                        }}
+                        location={result}
                         onClick={() => {
                             onLocationChange({
-                                lat: value[2],
-                                lon: value[1],
+                                lat: result.lat,
+                                lon: result.lon,
                             });
                         }}
                     />
