@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
-    @Query(value = "SELECT name, x, y FROM (SELECT name, u, v, ROW_NUMBER() OVER(PARTITION BY name ORDER BY ID DESC) AS rn FROM \"public\".location_roads_edges) b INNER JOIN \"public\".location_roads_verts a ON u = a.osmid WHERE rn = 1 AND name ILIKE %:name% AND NOT SUBSTRING(name, 1, 1) LIKE '['  LIMIT :limit OFFSET :skip", nativeQuery = true)
+    @Query(value = "SELECT name, x, y FROM (SELECT name, u, v, ROW_NUMBER() OVER(PARTITION BY name ORDER BY ID DESC) AS rn FROM \"public\".location_roads_edges) b INNER JOIN \"public\".location_roads_verts a ON u = a.id WHERE rn = 1 AND name ILIKE %:name% AND NOT SUBSTRING(name, 1, 1) LIKE '['  LIMIT :limit OFFSET :skip", nativeQuery = true)
     List<Object[]> findRoadsByName(@Param("name") String name,
                                    @Param("limit") Long limit,
                                    @Param("skip") Long skip);
