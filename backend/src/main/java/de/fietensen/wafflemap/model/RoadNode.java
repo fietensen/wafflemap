@@ -14,9 +14,6 @@ public class RoadNode {
     @Id
     private Long id;
 
-    @Column(name = "osmid")
-    private Long osmId;
-
     private Double y;
     private Double x;
 

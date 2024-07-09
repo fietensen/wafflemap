@@ -31,7 +31,7 @@ print("[*] Done assigning tile IDs")
 
 print("[*] Setting row indices")
 edges.reset_index(inplace=True)
-vertices.reset_index(inplace=True)
+vertices.index.name = 'id'
 print("[*] Done setting row indices")
 
 print("[*] Exporting graph to PostGIS")
