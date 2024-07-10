@@ -57,6 +57,7 @@ public class RoadService {
             mapped.setName((String) object[0]);
             mapped.setLat((Double) object[1]);
             mapped.setLon((Double) object[2]);
+            mapped.setId((Long) object[3]);
             resultsMapped.add(mapped);
         }
 
