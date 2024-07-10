@@ -1,0 +1,80 @@
+/*
+    @tag: div
+    @component: TopWrapper
+*/
+.top-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+/*
+    @tag: div
+    @component: Wrapper
+*/
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 95%;
+}
+
+/*
+    @tag: span
+    @component: Label
+    select: true
+    highlighted: true
+*/
+.label {
+    font-family: 'Roboto';
+    margin-left: 0.25em;
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    font-size: 12pt;
+
+    color: #6f6f6f;
+}
+
+.label.select {
+    transition: all 50ms ease;
+    transform: translateY(-2em);
+    font-size: 10pt;
+    color: #3f3f3f;
+
+    font-weight: unset;
+}
+
+.label.highlighted {
+    color: #227eff;
+    font-weight: 500;
+}
+
+/*
+    @tag: div
+    @component: NodeWrapper
+*/
+.node-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 95%;
+}
+
+.node-wrapper:hover {
+    background-color: #00000020;
+}
+
+/*
+    @tag: input
+    @component: SelectedNode
+*/
+.selected-node {
+    height: 2.5em;
+    border: 1px solid #00000060;
+    border-radius: 3px;
+    background: #ffffff00;
+    pointer-events: none;
+}

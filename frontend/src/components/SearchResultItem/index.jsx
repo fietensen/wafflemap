@@ -4,12 +4,8 @@ import { Wrapper, LocationName, LocationCoordinates } from './styles.module.css'
 function SearchResultItem({ location, onClick }) {
     return (
         <Wrapper onClick={onClick}>
-            <LocationName>
-                {location.name}
-            </LocationName>
-            <LocationCoordinates>
-                {'@(' + location.lat + ', ' + location.lon + ')'}
-            </LocationCoordinates>
+            <LocationName>{location.name}</LocationName>
+            <LocationCoordinates>@({location.lat}, {location.lon})</LocationCoordinates>
         </Wrapper>
     )
 }
@@ -18,7 +14,8 @@ SearchResultItem.propTypes = {
     location: PropTypes.shape({
         lat: PropTypes.number.isRequired,
         lon: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        name: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func,
 }

@@ -3,10 +3,16 @@
     @component: Wrapper
 **/
 .wrapper {
-    border: 1px solid #5f5f5f;
-    border-top-style: unset;
+    height: fit-content;
+    width: 20vw;
+    background-color: #ffffff;
 
+    box-sizing: border-box;
+    border: 1px solid #55555590;
     border-radius: 4px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+
+    pointer-events: all;
+
+    display: flex;
+    flex-direction: column;
 }

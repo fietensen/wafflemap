@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Input } from './styles.module.css';
 import PropTypes from 'prop-types';
 
-function InputBox({ onInput, confirmationTime, onStartTyping, openBottom, placeholder }) {
+function InputBox({ onInput, confirmationTime, onStartTyping, onFocus, onBlur }) {
     const typingTimeoutRef = useRef();
 
     const onInputChange = (e) => {
@@ -27,7 +27,7 @@ function InputBox({ onInput, confirmationTime, onStartTyping, openBottom, placeh
     };
 
     return (
-        <Input onChange={onInputChange} openBottom={openBottom} placeholder={placeholder} />
+        <Input onChange={onInputChange} onBlur={onBlur} onFocus={onFocus} />
     )
 }
 
@@ -35,8 +35,8 @@ InputBox.propTypes = {
     onInput: PropTypes.func,
     onStartTyping: PropTypes.func,
     confirmationTime: PropTypes.number,
-    openBottom: PropTypes.bool,
-    placeholder: PropTypes.string,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
 }
 
 export default InputBox
