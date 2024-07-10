@@ -1,0 +1,60 @@
+/*
+    @tag: div
+    @component: Wrapper
+*/
+.wrapper {
+    z-index: 9999;
+    position: absolute;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    height: 100%;
+    width: fit-content;
+    padding: 1em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+
+    pointer-events: none;
+}
+
+/*
+    @tag: div
+    @component: BoxWrapper
+*/
+.box-wrapper {
+    height: fit-content;
+    width: 20vw;
+    background-color: #ffffff;
+
+    box-sizing: border-box;
+    border: 1px solid #55555590;
+    border-radius: 4px;
+
+    pointer-events: all;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+/*
+    @tag: div
+    @component: TitleWrapper
+*/
+.title-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+/*
+    @tag: span
+    @component: Title
+*/
+.title {
+    font-family: 'Roboto';
+    font-weight: 300;
+}
