@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
-    @Query(value = "SELECT name, y, x FROM (SELECT name, u, v, ROW_NUMBER() OVER(PARTITION BY name ORDER BY ID DESC) AS rn FROM \"public\".location_roads_edges) b INNER JOIN \"public\".location_roads_verts a ON u = a.id WHERE rn = 1 AND name ILIKE %:name% AND NOT SUBSTRING(name, 1, 1) LIKE '['  LIMIT :limit OFFSET :skip", nativeQuery = true)
+    @Query(value = "SELECT name, y, x FROM (SELECT name, u, v, ROW_NUMBER() OVER(PARTITION BY name ORDER BY ID DESC) AS rn FROM \"public\".location_roads_edges) b INNER JOIN \"public\".location_roads_verts a ON u = a.id WHERE rn = 1 AND name ILIKE :name% AND NOT SUBSTRING(name, 1, 1) LIKE '['  LIMIT :limit OFFSET :skip", nativeQuery = true)
     List<Object[]> findRoadsByName(@Param("name") String name,
                                    @Param("limit") Long limit,
                                    @Param("skip") Long skip);
@@ -21,11 +21,12 @@ public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
                                     @Param("limit") Long limit,
                                     @Param("skip") Long skip);
 
-    @Query(value = "SELECT edge, cost FROM pgr_dijkstra(\n" +
-            "\t'SELECT id, u as source, v as target, length as cost FROM location_roads_edges',\n" +
-            "\t:from,\n" +
-            "\t:to,\n" +
-            "\tTRUE\n" +
-            ") pd WHERE edge != -1 ORDER BY path_seq", nativeQuery = true)
+    @Query(value = """
+            SELECT edge, cost FROM pgr_dijkstra(
+            'SELECT id, u as source, v as target, length as cost FROM location_roads_edges',
+            :from,
+            :to,
+            TRUE
+            ) pd WHERE edge != -1 ORDER BY path_seq""", nativeQuery = true)
     List<Object[]> findPathFromAToB(@Param("from") Long from, @Param("to") Long to);
 }
