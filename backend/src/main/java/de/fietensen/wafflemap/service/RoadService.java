@@ -4,6 +4,12 @@ import de.fietensen.wafflemap.dto.*;
 import de.fietensen.wafflemap.model.RoadEdge;
 import de.fietensen.wafflemap.repository.RoadEdgeRepository;
 import de.fietensen.wafflemap.repository.RoadSearchRepository;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKBReader;
+import org.locationtech.jts.io.WKBWriter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,16 +103,31 @@ public class RoadService {
         List<Long> pathIds = new LinkedList<>();
         Double totalCost = 0.0;
         List<Object[]> pathRaw = roadSearchRepository.findPathFromAToB(fromNodeId, toNodeId);
+        List<Geometry> geometries = new LinkedList<>();
+
         if (pathRaw.isEmpty())
             return null;
+
+        WKBReader wkbr = new WKBReader();
 
         for (Object[] pathSeq : pathRaw) {
             pathIds.add((Long) pathSeq[0]);
             totalCost += (Double) pathSeq[1];
+            try {
+                geometries.add(wkbr.read((byte[])pathSeq[2]));
+            } catch (ParseException e) {
+                return null;
+            }
         }
+
+        Geometry[] geometriesArr = new Geometry[geometries.size()];
+        geometries.toArray(geometriesArr);
+
+        GeometryCollection geometryCollection = new GeometryCollection(geometriesArr, new GeometryFactory());
 
         routeDTO.setDistance(totalCost);
         routeDTO.setIds(pathIds);
+        routeDTO.setGeometry(geometryCollection);
 
         return routeDTO;
     }
