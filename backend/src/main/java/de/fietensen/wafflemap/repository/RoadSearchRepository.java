@@ -21,12 +21,6 @@ public interface RoadSearchRepository extends JpaRepository<DummyEntity, Long> {
                                     @Param("limit") Long limit,
                                     @Param("skip") Long skip);
 
-    @Query(value = """
-            SELECT edge, cost FROM pgr_dijkstra(
-            'SELECT id, u as source, v as target, length as cost FROM location_roads_edges',
-            :from,
-            :to,
-            TRUE
-            ) pd WHERE edge != -1 ORDER BY path_seq""", nativeQuery = true)
+    @Query(value = "SELECT pd.edge, pd.cost, ST_AsEWKB(ed.geometry) FROM pgr_dijkstra('SELECT id, u as source, v as target, length as cost FROM location_roads_edges', :from, :to, TRUE) pd INNER JOIN location_roads_edges ed ON ed.id = pd.edge WHERE pd.edge != -1 ORDER BY pd.path_seq", nativeQuery = true)
     List<Object[]> findPathFromAToB(@Param("from") Long from, @Param("to") Long to);
 }
