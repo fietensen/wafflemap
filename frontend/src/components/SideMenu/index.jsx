@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import RoadLocationInput from '../RoadLocationInput';
 import { Wrapper, BoxWrapper } from './styles.module.css';
 import PropTypes from 'prop-types';
@@ -21,19 +21,19 @@ function SideMenu({ showRoute }) {
                 console.error(err);
                 alert("An error occoured!");
             })
-    }, [startRoadSelected, destRoadSelected]);
+    }, [startRoadSelected, destRoadSelected, showRoute]);
 
     return (
         <Wrapper>
             <BoxWrapper>
                 <RoadLocationInput
                     setCurrentRoadInputElement={setCurrentRoadInputElement}
-                    onRoadSelect={(road) => { setStartRoadSelected(road); }}
+                    onRoadSelect={useCallback((road) => { setStartRoadSelected(road); }, [])}
                     label={'Start'}
                 />
                 <RoadLocationInput
                     setCurrentRoadInputElement={setCurrentRoadInputElement}
-                    onRoadSelect={(road) => { setDestRoadSelected(road); }}
+                    onRoadSelect={useCallback((road) => { setDestRoadSelected(road); }, [])}
                     label={'Destination'}
                 />
             </BoxWrapper>

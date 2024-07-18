@@ -66,7 +66,7 @@ function RoadLocationInput({ label, setCurrentRoadInputElement, onRoadSelect }) 
                 setUserTyping(false);
             })
             .catch((e) => { alert("error: " + e); })
-    }, [userInput]);
+    }, [onRoadSelect, userInput]);
 
     return (
         <TopWrapper>
