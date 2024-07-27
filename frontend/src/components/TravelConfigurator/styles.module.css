@@ -1,0 +1,9 @@
+/*
+    @tag: div
+    @component: Wrapper
+*/
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
