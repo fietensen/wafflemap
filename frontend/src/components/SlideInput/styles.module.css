@@ -1,0 +1,50 @@
+/*
+    @tag: span
+    @component: InputName
+*/
+.input-name {
+    font-family: 'Roboto';
+    font-size: 12pt;
+    font-weight: 300;
+    display: block;
+    padding-left: 0.5em;
+}
+
+/*
+    @tag: div
+    @component: InputWrapper
+*/
+.input-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/*
+    @tag: div
+    @component: InputTextWrapper
+*/
+.input-text-wrapper {
+    display: flex;
+    gap: 0.2em;
+    align-items: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*
+    @tag: span
+    @component: MetricLabel
+*/
+.metric-label {
+    font-family: 'Roboto';
+}
